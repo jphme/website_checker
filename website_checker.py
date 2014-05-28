@@ -24,6 +24,7 @@ text="Website {} changed, match word {} not found {} times".format(website,match
 subject="Alert: Website {} changed".format(website)
 
 start=dt.datetime.today()+dt.timedelta(seconds=3)
+alerts=0
 
 while True:
     now=dt.datetime.today()
@@ -35,6 +36,7 @@ while True:
                 print "Website changed!"
                 print dt.datetime.today()
                 send_mail(from_adress,from_password,to_adress,text,subject,True)
+                alerts+=1
             else:
                 print "Nothing changed..."
                 print dt.datetime.today()
@@ -42,5 +44,8 @@ while True:
             print "Website not available"
             subject="Alert: Website {} not available".format(website)
             send_mail(from_adress,from_password,to_adress,text,subject,True)
+            alerts+=1
         start=now+check_intervall
+        if alerts>=5:
+            break
     time.sleep(1)
